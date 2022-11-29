@@ -6,7 +6,7 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 14:06:58 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/11/29 20:11:56 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/11/29 20:58:09 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static char	*join_free(char *buffer, char *buff)
 	char	*tmp;
 
 	tmp = ft_gnl_strjoin(buffer, buff);
-	//free(buffer);
+	free(buffer);
 	return (tmp);
 }
 
@@ -72,25 +72,28 @@ static char	*get_line(char *buffer)
 static char	*read_the_file(int fd, char *result)
 {
 	char	*buffer;
-	int		read_bytes;
+	ssize_t		read_bytes;
 
 	if (!result)
 		result = (char *)malloc(1 * sizeof(char));
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buffer)
+		return (NULL);
 	read_bytes = 1;
 	while (read_bytes > 0 && !ft_strchr(buffer, '\n'))
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes < 0)
+		{
+			free(result);
+			free(buffer);
 			break ;
+		}
 		buffer[read_bytes] = '\0';
 		result = join_free(result, buffer);
 	}
 	free(buffer);
-	if (read_bytes < 0)
-		return (NULL);
-	else
-		return (result);
+	return (result);
 }
 
 char	*get_next_line(int fd)
