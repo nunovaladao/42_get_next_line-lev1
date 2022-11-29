@@ -3,118 +3,123 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoped2 <joaoped2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/27 14:06:58 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/11/29 17:10:30 by nsoares-         ###   ########.fr       */
+/*   Created: 2022/11/14 13:51:10 by joaoped2          #+#    #+#             */
+/*   Updated: 2022/11/21 11:36:55 by joaoped2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*join_free(char *buffer, char *buff)
+/*
+Vai adicionar a string alocada no buffer
+na line presente sendo s1 a linebr e o s2 o buffer
+*/
+static void	add(char **s1, char *s2)
 {
 	char	*tmp;
 
-	tmp = ft_gnl_strjoin(buffer, buff);
-	//free(buffer);
-	return (tmp);
+	tmp = ft_strjoin(*s1, s2);
+	free(*s1);
+	*s1 = tmp;
 }
 
-static char	*next_line(char *buffer)
+/*
+Salva o conteúdo de s em outra string
+"tmp" string com newline ou EOF
+retorna	a string com newline
+*/
+static char	*save_and_clear(char **line)
 {
-	char	*new_line;
-	int		i;
-	int		j;
+	char	*out;
+	char	*tmp;
+	char	*nl;
 
-	i = 0;
-	while (buffer[i] && buffer[i] != '\n')
-		i++;
-	if (!*buffer)
+	nl = ft_strchr(*line, '\n');
+	if (nl)
 	{
-		free(buffer);
-		return (NULL);
+		out = ft_substr(*line, 0, nl - *line + 1);
+		tmp = ft_strdup(nl + 1);
+		free(*line);
+		*line = tmp;
+		if (!**line)
+		{
+			free(*line);
+			*line = NULL;
+		}
+		return (out);
 	}
-	new_line = (char *)malloc((ft_strlen(buffer) - i + 1) * sizeof(char));
-	if (!new_line)
-		return (NULL);
-	i++;
-	j = 0;
-	while (buffer[i])
-		new_line[j++] = buffer[i++];
-	new_line[j] = '\0';
-	free(buffer);
-	return (new_line);
+	out = ft_strdup(*line);
+	free(*line);
+	*line = NULL;
+	return (out);
 }
 
-static char	*get_line(char *buffer)
+/*
+Le os dados do fd e adiciona-os à string da linha até encontrar
+nova linha
+line	pointer de char para string
+retorna	int	bytes_read de fd
+*/
+static int	read_and_add(char **line, int fd)
 {
-	char	*line;
-	size_t	size;
+	ssize_t	bytes_read;
+	char	*buf;
 
-	if (!*buffer)
-		return (NULL);
-	size = 0;
-	while (buffer[size] && buffer[size] != '\n')
-		size++;
-	line = (char *)malloc(sizeof(char) * (size + 1)); // (size + 2)
-	size = 0;
-	while (buffer[size] && buffer[size] != '\n')
+	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buf)
+		return (-1);
+	bytes_read = read(fd, buf, BUFFER_SIZE);
+	while (bytes_read > 0)
 	{
-		line[size] = buffer[size];
-		size++;
-	}
-	if (buffer[size] && buffer[size] == '\n')
-		line[size++] = '\n';
-	return (line);
-}
-
-static char	*read_the_file(int fd, char *result)
-{
-	char	*buffer;
-	int		read_bytes;
-
-	if (!result)
-		result = (char *)malloc(1 * sizeof(char));
-	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	read_bytes = 1;
-	while (read_bytes > 0 && !ft_strchr(buffer, '\n'))
-	{
-		read_bytes = read(fd, buffer, BUFFER_SIZE);
-		if (read_bytes < 0)
+		buf[bytes_read] = 0;
+		if (!line)
+			*line = ft_strdup("");
+		add(line, buf);
+		if (ft_strchr(buf, '\n'))
 			break ;
-		buffer[read_bytes] = '\0';
-		result = join_free(result, buffer);
+		bytes_read = read(fd, buf, BUFFER_SIZE);
 	}
-	free(buffer);
-	if (read_bytes < 0)
-		return (NULL);
-	else
-		return (result);
+	free(buf);
+	return (bytes_read);
 }
 
+/* retorna char* line de fd com nl incluido */
 char	*get_next_line(int fd)
 {
-	static char	*static_buffer;
-	char		*line;
+	static char	*string;
+	char		*ret_line;
+	int			br;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	static_buffer = read_the_file(fd, static_buffer);
-	if (!static_buffer)
+	br = read_and_add(&string, fd);
+	if (br < 0)
 		return (NULL);
-	line = get_line(static_buffer);
-	static_buffer = next_line(static_buffer);
-	return (line);
+	if (!br && !string)
+		return (NULL);
+	ret_line = save_and_clear(&string);
+	return (ret_line);
 }
 
-/*int main()
+/*int	main(void)
 {
-    int fd;
+	int	fd = open("teste.txt", O_RDONLY);
+	char *line;
+	int i;
 
-    fd = open("file.txt", O_RDONLY); // Abrir o ficheiro e ler!
-
-    printf("%s", get_next_line(fd));
-    printf("%s", get_next_line(fd));
-    printf("%s", get_next_line(fd));
+	i = 1;
+	line = get_next_line(fd);
+	while (i < 2)
+	{
+		printf("%2d| %s", i, line);
+		if (!line)
+			printf("\n");
+		free (line);
+		line = get_next_line(fd);
+		i++;
+	}
+	close(fd);
+	return (0);
 }*/
