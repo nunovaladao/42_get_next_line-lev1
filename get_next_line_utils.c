@@ -28,18 +28,18 @@ char	*ft_gnl_strjoin(char *s1, char *s2)
 
 	if (!s1)
 	{
-        s1 = malloc(sizeof(char));
-        s1[0] = '\0';
-    }
+		s1 = malloc(sizeof(char));
+		s1[0] = '\0';
+	}
 	if (!s2)
 		return (NULL);
 	dest = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-    if (!dest)
-        return (NULL);
+	if (!dest)
+		return (NULL);
 	ft_memcpy (dest, s1, ft_strlen(s1));
 	ft_memcpy (dest + ft_strlen(s1), s2, ft_strlen(s2) + 1);
-    dest[ft_strlen(s1) + ft_strlen(s2)] = '\0';
-    free(s1);
+	dest[ft_strlen(s1) + ft_strlen(s2)] = '\0';
+	free(s1);
 	return (dest);
 }
 
