@@ -6,15 +6,11 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 14:06:50 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/11/27 18:04:44 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/11/29 15:37:06 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-/*#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>*/
 
 size_t	ft_strlen(const char *s)
 {
@@ -26,35 +22,47 @@ size_t	ft_strlen(const char *s)
 	return (a);
 }
 
-char	*ft_strdup(const char *s)
+char	*ft_gnl_strjoin(char *s1, char *s2)
 {
 	char	*dest;
 
-	dest = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
-	if (dest == NULL)
+	if (!s1)
+	{
+        s1 = malloc(sizeof(char));
+        s1[0] = '\0';
+    }
+	if (!s2)
 		return (NULL);
-	ft_memcpy(dest, s, ft_strlen(s) + 1);
+	dest = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+    if (!dest)
+        return (NULL);
+	ft_memcpy (dest, s1, ft_strlen(s1));
+	ft_memcpy (dest + ft_strlen(s1), s2, ft_strlen(s2) + 1);
+    dest[ft_strlen(s1) + ft_strlen(s2)] = '\0';
+    free(s1);
 	return (dest);
 }
 
-/*int main(void)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-    FILE * fp;
-    char * line = NULL;
-    size_t len = 0;
-    ssize_t read;
+	size_t	i;
 
-    fp = fopen("file.txt", "r");
-    if (fp == NULL)
-        exit(EXIT_FAILURE);
+	if (!dest && !src)
+		return (NULL);
+	i = 0;
+	while (i < n)
+	{
+		((unsigned char *)dest)[i] = ((unsigned char *)src)[i];
+		i++;
+	}
+	return (dest);
+}
 
-    while ((read = getline(&line, &len, fp)) != -1) {
-        printf("Retrieved line of length %zu:\n", read);
-        printf("%s", line);
-    }
-
-    fclose(fp);
-    if (line)
-        free(line);
-    exit(EXIT_SUCCESS);
-}*/
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s != '\0' && c != *s)
+		s++;
+	if (c == *s)
+		return ((char *)s);
+	return (0);
+}
