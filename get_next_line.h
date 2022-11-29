@@ -6,7 +6,7 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 14:07:03 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/11/29 15:36:18 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/11/29 16:53:42 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
+#  define BUFFER_SIZE 10
 # endif
 
 char *get_next_line(int fd);
