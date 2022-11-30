@@ -6,26 +6,17 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 14:06:58 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/11/29 20:58:09 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/11/30 11:23:15 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*join_free(char *buffer, char *buff)
+static char	*delete_line(char *buffer)
 {
-	char	*tmp;
-
-	tmp = ft_gnl_strjoin(buffer, buff);
-	free(buffer);
-	return (tmp);
-}
-
-static char	*next_line(char *buffer)
-{
-	char	*new_line;
-	int		i;
-	int		j;
+	char	*line;
+	size_t		i;
+	size_t		j;
 
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
@@ -35,16 +26,16 @@ static char	*next_line(char *buffer)
 		free(buffer);
 		return (NULL);
 	}
-	new_line = (char *)malloc((ft_strlen(buffer) - i + 1) * sizeof(char));
-	if (!new_line)
+	line = malloc(((ft_strlen(buffer) - i) + 1) * sizeof(char));
+	if (!line)
 		return (NULL);
 	i++;
 	j = 0;
 	while (buffer[i])
-		new_line[j++] = buffer[i++];
-	new_line[j] = '\0';
+		line[j++] = buffer[i++];
+	line[j] = '\0';
 	free(buffer);
-	return (new_line);
+	return (line);
 }
 
 static char	*get_line(char *buffer)
@@ -57,7 +48,7 @@ static char	*get_line(char *buffer)
 	size = 0;
 	while (buffer[size] && buffer[size] != '\n')
 		size++;
-	line = (char *)malloc(sizeof(char) * (size + 1)); // (size + 2)
+	line = malloc(sizeof(char) * (size + 1)); // (size + 2)
 	size = 0;
 	while (buffer[size] && buffer[size] != '\n')
 	{
@@ -83,14 +74,14 @@ static char	*read_the_file(int fd, char *result)
 	while (read_bytes > 0 && !ft_strchr(buffer, '\n'))
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
-		if (read_bytes < 0)
+		if (read_bytes < 0 /*|| (read_bytes == 0 && result == NULL)*/)
 		{
-			free(result);
-			free(buffer);
+			//free(result);
+			//free(buffer);
 			break ;
 		}
 		buffer[read_bytes] = '\0';
-		result = join_free(result, buffer);
+		result = ft_gnl_strjoin(result, buffer);
 	}
 	free(buffer);
 	return (result);
@@ -107,7 +98,7 @@ char	*get_next_line(int fd)
 	if (!static_buffer)
 		return (NULL);
 	line = get_line(static_buffer);
-	static_buffer = next_line(static_buffer);
+	static_buffer = delete_line(static_buffer);
 	return (line);
 }
 
