@@ -6,7 +6,7 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 14:06:50 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/11/29 15:37:06 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/11/30 17:36:57 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*ft_gnl_strjoin(char *s1, char *s2)
 	}
 	if (!s2)
 		return (NULL);
-	dest = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	dest = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!dest)
 		return (NULL);
 	ft_memcpy (dest, s1, ft_strlen(s1));

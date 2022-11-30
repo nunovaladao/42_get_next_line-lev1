@@ -6,7 +6,7 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 14:06:58 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/11/30 15:02:00 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/11/30 20:40:50 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,11 +102,20 @@ char	*get_next_line(int fd)
 
 /*int main()
 {
-    int fd;
-
-    fd = open("file.txt", O_RDONLY); // Abrir o ficheiro e ler!
-
-    printf("%s", get_next_line(fd));
-    printf("%s", get_next_line(fd));
-    printf("%s", get_next_line(fd));
+    int	fd = open("file.txt", O_RDONLY);
+	char *line;
+	int i;
+	i = 1;
+	line = get_next_line(fd);
+	while (i <= 3)
+	{
+		printf("%2d| %s", i, line);
+		if (!line)
+			printf("\n");
+		free (line);
+		line = get_next_line(fd);
+		i++;
+	}
+	close(fd);
+	return (0);
 }*/
