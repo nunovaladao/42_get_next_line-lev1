@@ -6,7 +6,7 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 14:06:58 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/11/30 11:23:15 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:02:00 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,23 @@ static char	*get_line(char *buffer)
 {
 	char	*line;
 	size_t	size;
+	size_t i;
 
+	i = 0;
 	if (!*buffer)
 		return (NULL);
 	size = 0;
 	while (buffer[size] && buffer[size] != '\n')
 		size++;
-	line = malloc(sizeof(char) * (size + 1)); // (size + 2)
-	size = 0;
-	while (buffer[size] && buffer[size] != '\n')
+	line = malloc(sizeof(char) * (size + 2));
+	if (!line)
+		return (NULL);
+	while (i <= size)
 	{
-		line[size] = buffer[size];
-		size++;
+		line[i] = buffer[i];
+		i++;
 	}
-	if (buffer[size] && buffer[size] == '\n')
-		line[size++] = '\n';
+	line[i] = '\0';
 	return (line);
 }
 
@@ -74,12 +76,8 @@ static char	*read_the_file(int fd, char *result)
 	while (read_bytes > 0 && !ft_strchr(buffer, '\n'))
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
-		if (read_bytes < 0 /*|| (read_bytes == 0 && result == NULL)*/)
-		{
-			//free(result);
-			//free(buffer);
+		if (read_bytes < 0)
 			break ;
-		}
 		buffer[read_bytes] = '\0';
 		result = ft_gnl_strjoin(result, buffer);
 	}
