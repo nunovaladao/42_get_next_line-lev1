@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/27 14:06:58 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/12/01 21:38:14 by nsoares-         ###   ########.fr       */
+/*   Created: 2022/12/01 22:52:50 by nsoares-          #+#    #+#             */
+/*   Updated: 2022/12/01 23:00:42 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char		*get_next_line(int fd);
 static char	*read_the_file(int fd, char *result);
 static char	*get_line(char *buffer);
 static char	*delete_line(char *buffer);
 
-int main()
+/*int main()
 {
     int	fd = open("file.txt", O_RDONLY);
 	char *line;
@@ -35,20 +35,20 @@ int main()
 	}
 	close(fd);
 	return (0);
-}
+}*/
 
 char	*get_next_line(int fd)
 {
-	static char	*static_buffer;
+	static char	*static_buffer[OPEN_MAX];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, &line, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE < 1 || fd > OPEN_MAX)
 		return (NULL);
-	static_buffer = read_the_file(fd, static_buffer);
+	static_buffer[fd] = read_the_file(fd, static_buffer);
 	if (!static_buffer)
 		return (NULL);
 	line = get_line(static_buffer);
-	static_buffer = delete_line(static_buffer);
+	static_buffer[fd] = delete_line(static_buffer);
 	return (line);
 }
 
