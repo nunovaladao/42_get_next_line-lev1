@@ -6,13 +6,13 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 14:06:58 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/12/01 00:23:54 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/12/01 17:44:36 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*get_next_line(int fd);
+char		*get_next_line(int fd);
 static char	*read_the_file(int fd, char *result);
 static char	*get_line(char *buffer);
 static char	*delete_line(char *buffer);
@@ -42,7 +42,7 @@ char	*get_next_line(int fd)
 	static char	*static_buffer;
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, &line, 0) < 0)
 		return (NULL);
 	static_buffer = read_the_file(fd, static_buffer);
 	if (!static_buffer)
@@ -52,13 +52,13 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-static char	*read_the_file(int fd, char *result)
+static char	*read_the_file(int fd, char *read_result)
 {
 	char	*buffer;
-	ssize_t		read_bytes;
+	ssize_t	read_bytes;
 
-	if (!result)
-		result = (char *)malloc(1 * sizeof(char));
+	if (!read_result)
+		read_result = (char *)malloc(1 * sizeof(char));
 	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
@@ -69,17 +69,17 @@ static char	*read_the_file(int fd, char *result)
 		if (read_bytes < 0)
 			break ;
 		buffer[read_bytes] = '\0';
-		result = ft_gnl_strjoin(result, buffer);
+		read_result = ft_gnl_strjoin(read_result, buffer);
 	}
 	free(buffer);
-	return (result);
+	return (read_result);
 }
 
 static char	*get_line(char *buffer)
 {
 	char	*line;
 	size_t	size;
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	if (!*buffer)
@@ -101,7 +101,7 @@ static char	*get_line(char *buffer)
 
 static char	*delete_line(char *buffer)
 {
-	char	*line;
+	char		*line;
 	size_t		i;
 	size_t		j;
 
