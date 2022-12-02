@@ -6,7 +6,7 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 14:06:58 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/12/02 10:44:41 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/12/02 23:23:11 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static char	*read_the_file(int fd, char *result);
 static char	*get_line(char *buffer);
 static char	*delete_line(char *buffer);
 
-/*int main()
+/* int main()
 {
     int	fd = open("file.txt", O_RDONLY);
 	char *line;
@@ -35,14 +35,14 @@ static char	*delete_line(char *buffer);
 	}
 	close(fd);
 	return (0);
-}*/
+} */
 
 char	*get_next_line(int fd)
 {
 	static char	*static_buffer;
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE < 1 || read(fd, &line, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	static_buffer = read_the_file(fd, static_buffer);
 	if (!static_buffer)
@@ -55,11 +55,11 @@ char	*get_next_line(int fd)
 static char	*read_the_file(int fd, char *read_result)
 {
 	char	*buffer;
-	ssize_t	read_bytes;
+	int		read_bytes;
 
 	if (!read_result)
 		read_result = (char *)malloc(1 * sizeof(char));
-	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
 	read_bytes = 1;
@@ -78,8 +78,8 @@ static char	*read_the_file(int fd, char *read_result)
 static char	*get_line(char *buffer)
 {
 	char	*line;
-	size_t	size;
-	size_t	i;
+	int		size;
+	int		i;
 
 	i = 0;
 	if (!*buffer)
@@ -87,7 +87,7 @@ static char	*get_line(char *buffer)
 	size = 0;
 	while (buffer[size] && buffer[size] != '\n')
 		size++;
-	line = malloc(sizeof(char) * (size + 2));
+	line = malloc((size + 2) * sizeof(char));
 	if (!line)
 		return (NULL);
 	while (i <= size)
@@ -102,8 +102,8 @@ static char	*get_line(char *buffer)
 static char	*delete_line(char *buffer)
 {
 	char		*line;
-	size_t		i;
-	size_t		j;
+	int			i;
+	int			j;
 
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
@@ -113,7 +113,7 @@ static char	*delete_line(char *buffer)
 		free(buffer);
 		return (NULL);
 	}
-	line = malloc(((ft_strlen(buffer) - i) + 1) * sizeof(char));
+	line = (char *)malloc(((ft_strlen(buffer) - i) + 1) * sizeof(char));
 	if (!line)
 		return (NULL);
 	i++;
