@@ -6,7 +6,7 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 22:52:50 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/12/01 23:00:42 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/12/02 10:30:04 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,28 @@ static char	*delete_line(char *buffer);
 
 /*int main()
 {
-    int	fd = open("file.txt", O_RDONLY);
+    int	fd1 = open("file.txt", O_RDONLY);
+	int	fd2 = open("file1.txt", O_RDONLY);
+
 	char *line;
 	int i;
+
 	i = 1;
-	line = get_next_line(fd);
-	while (i <= 3)
+	while (i < 6)
 	{
-		printf("%2d| %s", i, line);
+		line = get_next_line(fd1);
+		printf("fd_1 %2d| %s", i, line);
 		if (!line)
 			printf("\n");
-		free (line);
-		line = get_next_line(fd);
-		i++;
+		free(line);
+		line = get_next_line(fd2);
+		printf("fd_2 %2d| %s", i, line);
+		if (!line)
+			printf("\n");
+		free(line);
+		++i;
 	}
-	close(fd);
+	close(fd1);close(fd2);
 	return (0);
 }*/
 
@@ -44,11 +51,11 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE < 1 || fd > OPEN_MAX)
 		return (NULL);
-	static_buffer[fd] = read_the_file(fd, static_buffer);
-	if (!static_buffer)
+	static_buffer[fd] = read_the_file(fd, static_buffer[fd]);
+	if (!static_buffer[fd])
 		return (NULL);
-	line = get_line(static_buffer);
-	static_buffer[fd] = delete_line(static_buffer);
+	line = get_line(static_buffer[fd]);
+	static_buffer[fd] = delete_line(static_buffer[fd]);
 	return (line);
 }
 

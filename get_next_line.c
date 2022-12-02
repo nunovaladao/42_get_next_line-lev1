@@ -6,7 +6,7 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 14:06:58 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/12/01 21:38:14 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/12/02 10:44:41 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static char	*read_the_file(int fd, char *result);
 static char	*get_line(char *buffer);
 static char	*delete_line(char *buffer);
 
-int main()
+/*int main()
 {
     int	fd = open("file.txt", O_RDONLY);
 	char *line;
@@ -35,7 +35,7 @@ int main()
 	}
 	close(fd);
 	return (0);
-}
+}*/
 
 char	*get_next_line(int fd)
 {
