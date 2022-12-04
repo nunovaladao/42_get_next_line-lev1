@@ -6,7 +6,7 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 14:06:58 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/12/02 23:23:11 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/12/04 23:34:11 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char		*get_next_line(int fd);
 static char	*read_the_file(int fd, char *result);
 static char	*get_line(char *buffer);
-static char	*delete_line(char *buffer);
+static char	*del_line_read(char *buffer);
 
 /* int main()
 {
@@ -48,7 +48,7 @@ char	*get_next_line(int fd)
 	if (!static_buffer)
 		return (NULL);
 	line = get_line(static_buffer);
-	static_buffer = delete_line(static_buffer);
+	static_buffer = del_line_read(static_buffer);
 	return (line);
 }
 
@@ -59,11 +59,11 @@ static char	*read_the_file(int fd, char *read_result)
 
 	if (!read_result)
 		read_result = (char *)malloc(1 * sizeof(char));
-	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
 	read_bytes = 1;
-	while (read_bytes > 0 && !ft_strchr(buffer, '\n'))
+	while (read_bytes > 0 && !ft_strchr(read_result, '\n'))
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes < 0)
@@ -78,8 +78,8 @@ static char	*read_the_file(int fd, char *read_result)
 static char	*get_line(char *buffer)
 {
 	char	*line;
-	int		size;
-	int		i;
+	size_t		size;
+	size_t		i;
 
 	i = 0;
 	if (!*buffer)
@@ -99,28 +99,28 @@ static char	*get_line(char *buffer)
 	return (line);
 }
 
-static char	*delete_line(char *buffer)
+static char	*del_line_read(char *buffer)
 {
-	char		*line;
-	int			i;
-	int			j;
+	char		*new_line;
+	size_t			i;
+	size_t			j;
 
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	if (!*buffer)
+	if (!buffer[i])
 	{
 		free(buffer);
 		return (NULL);
 	}
-	line = (char *)malloc(((ft_strlen(buffer) - i) + 1) * sizeof(char));
-	if (!line)
+	new_line = malloc(((ft_strlen(buffer) - i) + 1) * sizeof(char));
+	if (!new_line)
 		return (NULL);
 	i++;
 	j = 0;
 	while (buffer[i])
-		line[j++] = buffer[i++];
-	line[j] = '\0';
+		new_line[j++] = buffer[i++];
+	new_line[j] = '\0';
 	free(buffer);
-	return (line);
+	return (new_line);
 }
