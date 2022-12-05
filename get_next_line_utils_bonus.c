@@ -6,17 +6,19 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 22:54:34 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/12/01 22:55:02 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/12/05 17:08:28 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
 size_t	ft_strlen(const char *s)
 {
 	size_t	a;
 
 	a = 0;
+	if (!s)
+		return (0);
 	while (s[a] != '\0')
 		a++;
 	return (a);
@@ -58,11 +60,20 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr(char *s, int c)
 {
-	while (*s != '\0' && c != *s)
-		s++;
-	if (c == *s)
-		return ((char *)s);
+	int	i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	if (c == '\0')
+		return ((char *)&s[ft_strlen(s)]);
+	while (s[i] != '\0')
+	{
+		if (s[i] == (char) c)
+			return ((char *)&s[i]);
+		i++;
+	}
 	return (0);
 }

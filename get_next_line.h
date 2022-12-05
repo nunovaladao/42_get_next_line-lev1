@@ -6,7 +6,7 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 14:07:03 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/12/04 18:46:59 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/12/05 15:52:36 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*get_next_line(int fd);
 
 size_t	ft_strlen(const char *s);
 char	*ft_gnl_strjoin(char *s1, char *s2);
-char	*ft_strchr(const char *s, int c);
+char	*ft_strchr(char *s, int c);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 
 #endif

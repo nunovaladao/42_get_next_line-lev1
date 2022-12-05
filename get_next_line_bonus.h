@@ -6,7 +6,7 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 22:53:53 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/12/02 09:58:31 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/12/05 17:18:07 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # endif
 
 # ifndef OPEN_MAX
-#  define OPEN_MAX 256
+#  define OPEN_MAX 4096
 # endif
 
 char	*get_next_line(int fd);
