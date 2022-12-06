@@ -6,7 +6,7 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 22:52:50 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/12/05 17:41:27 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/12/06 14:45:11 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	*get_next_line(int fd)
 	static char	*static_buffer[OPEN_MAX];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE < 1 || fd > OPEN_MAX)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > OPEN_MAX)
 		return (NULL);
 	static_buffer[fd] = read_the_file(fd, static_buffer[fd]);
 	if (!static_buffer[fd])
@@ -106,7 +106,7 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-/*int main()
+/* int main()
 {
     int	fd1 = open("file.txt", O_RDONLY);
 	int	fd2 = open("file1.txt", O_RDONLY);
@@ -115,7 +115,7 @@ char	*get_next_line(int fd)
 	int i;
 
 	i = 1;
-	while (i < 6)
+	while (i < 5)
 	{
 		line = get_next_line(fd1);
 		printf("fd_1 %2d| %s", i, line);
@@ -131,4 +131,4 @@ char	*get_next_line(int fd)
 	}
 	close(fd1);close(fd2);
 	return (0);
-}*/
+} */

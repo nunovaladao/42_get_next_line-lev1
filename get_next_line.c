@@ -6,7 +6,7 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 14:06:58 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/12/05 17:41:11 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/12/06 15:19:13 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*del_line_read(char *buffer)
 	if (!buffer[i])
 	{
 		free(buffer);
-		return (NULL);
+		return (NULL); 
 	}
 	new_line = (char *)malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
 	if (!new_line)
@@ -106,7 +106,7 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-/* int main()
+int main()
 {
     int	fd = open("file.txt", O_RDONLY);
 	char *line;
@@ -124,4 +124,4 @@ char	*get_next_line(int fd)
 	}
 	close(fd);
 	return (0);
-} */
+}
