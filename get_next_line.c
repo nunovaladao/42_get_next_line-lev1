@@ -6,7 +6,7 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 14:06:58 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/12/06 15:19:13 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/12/06 16:26:25 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-int main()
+/* int main()
 {
     int	fd = open("file.txt", O_RDONLY);
 	char *line;
@@ -124,4 +124,4 @@ int main()
 	}
 	close(fd);
 	return (0);
-}
+} */
