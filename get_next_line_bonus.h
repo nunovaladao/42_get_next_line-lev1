@@ -22,8 +22,8 @@
 #  define BUFFER_SIZE 10
 # endif
 
-# ifndef OPEN_MAX
-#  define OPEN_MAX 4096
+# ifndef FOPEN_MAX
+#  define FOPEN_MAX 16
 # endif
 
 char	*get_next_line(int fd);
@@ -34,7 +34,7 @@ char	*get_next_line(int fd);
 
 size_t	ft_strlen(const char *s);
 char	*ft_gnl_strjoin(char *s1, char *s2);
-char	*ft_strchr(const char *s, int c);
+char	*ft_strchr(char *s, int c);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 
 #endif

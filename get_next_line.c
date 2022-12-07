@@ -24,7 +24,7 @@ char	*del_line_read(char *buffer)
 	if (!buffer[i])
 	{
 		free(buffer);
-		return (NULL); 
+		return (NULL);
 	}
 	new_line = (char *)malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
 	if (!new_line)
@@ -82,6 +82,7 @@ char	*read_the_file(int fd, char *read_result)
 		if (read_bytes == -1)
 		{
 			free(buffer);
+			free(read_result);
 			return (NULL);
 		}
 		buffer[read_bytes] = '\0';
@@ -108,7 +109,7 @@ char	*get_next_line(int fd)
 
 /* int main()
 {
-    int	fd = open("file.txt", O_RDONLY);
+    	int	fd = open("file.txt", O_RDONLY);
 	char *line;
 	int i;
 	i = 1;

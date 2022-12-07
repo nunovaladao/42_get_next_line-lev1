@@ -6,7 +6,7 @@
 /*   By: nsoares- <nsoares-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 22:52:50 by nsoares-          #+#    #+#             */
-/*   Updated: 2022/12/06 14:45:11 by nsoares-         ###   ########.fr       */
+/*   Updated: 2022/12/07 19:03:01 by nsoares-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ char	*read_the_file(int fd, char *read_result)
 		if (read_bytes == -1)
 		{
 			free(buffer);
+			free(read_result);
 			return (NULL);
 		}
 		buffer[read_bytes] = '\0';
@@ -93,16 +94,16 @@ char	*read_the_file(int fd, char *read_result)
 
 char	*get_next_line(int fd)
 {
-	static char	*static_buffer[OPEN_MAX];
+	static char	*sta_buffer[FOPEN_MAX];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > OPEN_MAX)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
 		return (NULL);
-	static_buffer[fd] = read_the_file(fd, static_buffer[fd]);
-	if (!static_buffer[fd])
+	sta_buffer[fd] = read_the_file(fd, sta_buffer[fd]);
+	if (!sta_buffer[fd])
 		return (NULL);
-	line = get_lin(static_buffer[fd]);
-	static_buffer[fd] = del_line_read(static_buffer[fd]);
+	line = get_lin(sta_buffer[fd]);
+	sta_buffer[fd] = del_line_read(sta_buffer[fd]);
 	return (line);
 }
 
