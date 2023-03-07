@@ -3,8 +3,8 @@
 
 This project is about programming a function that returns a line read from a file descriptor.
 
-  - This will be a **function** that will be added to the **library (libft)** and that may be useful in future projects.
-  - I also learn a highly interesting new concept in C programming: **static variables**.
+  - This will be a **project** that will be added to the **library (libft)** and that may be useful in future projects.
+  - I also learned a highly interesting new concept in C programming: **static variables**.
 
 ## GRADE PROJECT ✅
 - 125/100 📋
